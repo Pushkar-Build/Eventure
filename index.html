@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>K Explore — Events, Meetups & Live Gatherings</title>
+  
+  <!-- Font pairings: Editorial serif + clean geometric sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  
+  <!-- Phosphor Icons for a clean, non-bloated icon set -->
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Grain overlay for tactile, modern depth -->
+  <div class="noise-overlay" aria-hidden="true"></div>
+
+  <!-- Top Sticky Navigation -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="#" class="brand">
+        <span class="brand-symbol">✦</span>
+        <span class="brand-name">k.explore</span>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="#events" class="nav-item">Explore</a>
+        <a href="#about" class="nav-item">About</a>
+        <button id="openPassesBtn" class="passes-pill-btn">
+          <i class="ph ph-ticket"></i>
+          <span>My Passes</span>
+          <span id="passesCount" class="counter">0</span>
+        </button>
+        <button id="themeToggle" class="icon-toggle-btn" aria-label="Toggle visual theme">
+          <i class="ph ph-sun" id="themeIcon"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Editorial Hero Section -->
+    <section class="hero">
+      <div class="hero-container">
+        <div class="status-pill">
+          <span class="pulsing-dot"></span>
+          <span>Bhubaneswar & Virtual — Winter 2026 Schedule</span>
+        </div>
+        <h1 class="hero-heading">
+          Real gatherings for people who <em>actually</em> build & create.
+        </h1>
+        <p class="hero-subtext">
+          Skip generic webinars. Discover community-led hackathons, quiet mechanical keyboard meetups, design critiques, and indie acoustics across the city.
+        </p>
+
+        <div class="hero-action-row">
+          <a href="#events" class="action-btn-primary">
+            <span>Find an event</span>
+            <i class="ph ph-arrow-down-right"></i>
+          </a>
+          <span class="seat-alert"><i class="ph ph-lightning"></i> Instant RSVP • No signup required</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Discovery & Filter Section -->
+    <section class="events-browser" id="events">
+      <div class="browser-container">
+        <!-- Search & Category Filters -->
+        <div class="filter-bar">
+          <div class="search-input-box">
+            <i class="ph ph-magnifying-glass search-icon"></i>
+            <input type="text" id="eventSearchInput" placeholder="Search by title, location, or vibe..." autocomplete="off" />
+            <button id="clearSearch" class="clear-btn" aria-label="Clear search input">&times;</button>
+          </div>
+
+          <div class="category-strip" id="categoryGroup">
+            <button class="cat-pill active" data-cat="all">All (6)</button>
+            <button class="cat-pill" data-cat="Tech & Code">Code & Systems</button>
+            <button class="cat-pill" data-cat="Design">Design & UI</button>
+            <button class="cat-pill" data-cat="Music">Music & Art</button>
+            <button class="cat-pill" data-cat="Culture">Culture & Community</button>
+          </div>
+        </div>
+
+        <!-- Dynamic Event Cards Grid -->
+        <div class="events-grid" id="eventsGrid">
+          <!-- Populated dynamically via app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Contextual "About the Project" Section -->
+    <section class="about-strip" id="about">
+      <div class="about-container">
+        <div class="about-quote">
+          <h3>Built with simple, resilient web standards.</h3>
+          <p>No bloated frameworks, no trackers, zero third-party cookies. Just semantic HTML, accessible CSS design tokens, and clean client-side JavaScript. Saves your pass offline directly in your browser.</p>
+        </div>
+        <div class="about-details">
+          <div class="detail-block">
+            <span class="detail-label">Built by</span>
+            <span class="detail-val">Student Project / KIIT</span>
+          </div>
+          <div class="detail-block">
+            <span class="detail-label">Storage</span>
+            <span class="detail-val">Browser LocalStorage</span>
+          </div>
+          <div class="detail-block">
+            <span class="detail-label">Validation</span>
+            <span class="detail-val">Native Client-side Guard</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Event Detail & RSVP Drawer Modal -->
+  <div class="modal-backdrop" id="eventDrawer" aria-hidden="true">
+    <div class="modal-card">
+      <button class="modal-close-trigger" id="closeDrawerBtn" aria-label="Close dialog">&times;</button>
+
+      <div class="modal-scroll-pane">
+        <!-- Event Header Graphic -->
+        <div class="event-poster">
+          <img id="modalPoster" src="" alt="" />
+          <div class="poster-overlay">
+            <span id="modalCategoryBadge" class="poster-badge">Category</span>
+          </div>
+        </div>
+
+        <div class="modal-content">
+          <div class="modal-heading-area">
+            <h2 id="modalEventTitle" class="modal-title">Event Title</h2>
+            <div class="event-facts-list">
+              <div class="fact-item">
+                <i class="ph ph-calendar-blank"></i>
+                <span id="modalDate">Date</span>
+              </div>
+              <div class="fact-item">
+                <i class="ph ph-map-pin"></i>
+                <span id="modalVenue">Venue</span>
+              </div>
+              <div class="fact-item highlight">
+                <i class="ph ph-hourglass-high"></i>
+                <span id="modalCountdown">Time remaining</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-story">
+            <h4>About this session</h4>
+            <p id="modalDescription"></p>
+          </div>
+
+          <!-- RSVP Form -->
+          <div class="rsvp-box">
+            <div class="rsvp-header">
+              <h4>Reserve your entry pass</h4>
+              <p>Entry is free. We'll generate an electronic boarding ticket immediately upon confirmation.</p>
+            </div>
+
+            <form id="rsvpForm" novalidate>
+              <input type="hidden" id="rsvpEventId" />
+
+              <div class="input-field">
+                <label for="attendeeName">Your full name</label>
+                <input type="text" id="attendeeName" placeholder="e.g., Pushkar Roy" autocomplete="name" />
+                <span class="field-msg" id="nameError"></span>
+              </div>
+
+              <div class="form-split">
+                <div class="input-field">
+                  <label for="attendeeEmail">Email address</label>
+                  <input type="email" id="attendeeEmail" placeholder="you@domain.com" autocomplete="email" />
+                  <span class="field-msg" id="emailError"></span>
+                </div>
+
+                <div class="input-field">
+                  <label for="attendeePhone">Phone number</label>
+                  <input type="tel" id="attendeePhone" placeholder="10-digit number" autocomplete="tel" />
+                  <span class="field-msg" id="phoneError"></span>
+                </div>
+              </div>
+
+              <button type="submit" class="submit-pass-btn">
+                <span>Confirm Reservation</span>
+                <i class="ph ph-check-circle"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- My Passes Drawer / Ticket Wallet -->
+  <div class="modal-backdrop" id="passesDrawer" aria-hidden="true">
+    <div class="modal-card passes-card">
+      <div class="passes-topbar">
+        <h3><i class="ph ph-ticket"></i> Saved Passes</h3>
+        <button class="modal-close-trigger-inline" id="closePassesDrawerBtn">&times;</button>
+      </div>
+      <div class="passes-list" id="passesList">
+        <!-- Rendered from localStorage -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast Container -->
+  <div class="toast-hub" id="toastHub"></div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-left">
+        <p class="footer-tagline"><strong>k.explore</strong> — Curated gatherings & responsive web project.</p>
+        <p class="footer-sub">Crafted for web design assessment • Production static ready.</p>
+      </div>
+      <div class="footer-right">
+        <a href="#events">Back to top ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
